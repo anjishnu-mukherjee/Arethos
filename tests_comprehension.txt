@@ -286,3 +286,184 @@ Explanation: The answer "The book had blank pages" is correct but lacks depth. T
 Q4. What message was written in the book when Eleanor returned as an adult?
 Grade: 10/10
 Explanation: The answer exactly matches the passage: "Stories do not end; they only wait to be written again." It is precise and fully correct.
+
+PROMPT:
+
+Here are some question answers:
+
+1. Who disproved Aristotle’s idea that heavier objects fall faster than lighter ones?
+A: Galileo Galilei.
+
+2. What does Newton’s law of universal gravitation describe?
+A: The force of attraction between two objects based on their masses and distance.
+
+3. What is the equation for gravitational force?
+A: F = G m1 m2 / r
+
+4. How did Einstein describe gravity in his theory of general relativity?
+A: As the warping of space-time by massive objects.
+
+5. What astronomical event confirmed Einstein’s theory of general relativity?
+A: The 1919 solar eclipse, when light bending around the Sun was observed.
+
+
+The Mystery of Gravity
+For centuries, humans have wondered why objects fall to the ground when dropped. The ancient Greek philosopher Aristotle believed that heavier objects fall faster than lighter ones. However, this idea was challenged in the 16th century by the Italian scientist Galileo Galilei. According to legend, Galileo conducted an experiment from the Leaning Tower of Pisa, dropping two spheres of different masses. He observed that both spheres hit the ground at the same time, proving that objects fall at the same rate regardless of their mass, assuming no air resistance.
+
+Later, in the 17th century, Sir Isaac Newton formulated his famous law of universal gravitation. He proposed that every object in the universe attracts every other object with a force that depends on their masses and the distance between them. This force, called gravity, explains why planets orbit the Sun and why the Moon orbits the Earth. Newton’s equation for gravitational force is:
+
+F = G m1 m2 / r^2
+ 
+where F is the gravitational force, G is the gravitational constant, m₁ and m₂ are the masses of the two objects, and r is the distance between their centers.
+
+In the early 20th century, Albert Einstein refined our understanding of gravity with his theory of general relativity. Instead of describing gravity as a force, Einstein proposed that massive objects warp the fabric of space-time, causing smaller objects to follow curved paths. This theory was confirmed during a solar eclipse in 1919 when scientists observed that the Sun's gravity bent the light from distant stars.
+
+Even today, gravity remains a fascinating topic in physics. Scientists continue to study its effects, from black holes to gravitational waves, unlocking new mysteries of the universe.
+Given a grading system of 10 marks on each question grade each question. Each question is graded on the correctness with the passage. The answer should be the most closest with reference with the passage.
+
+Reply me in this format:
+Question Number : Grade/10
+Most apt answer -
+
+RESPONSE:
+
+Here's a grading breakdown based on the provided passage:
+
+1.  Who disproved Aristotle’s idea that heavier objects fall faster than lighter ones?
+    **Grade: 10/10**
+    **Most apt answer:** Galileo Galilei.
+
+2.  What does Newton’s law of universal gravitation describe?
+    **Grade: 10/10**
+    **Most apt answer:** The force of attraction between two objects based on their masses and distance.
+
+3.  What is the equation for gravitational force?
+    **Grade: 9/10**
+    **Most apt answer:** F = G m1 m2 / r^2 (The passage provides the correct equation).
+
+4.  How did Einstein describe gravity in his theory of general relativity?
+    **Grade: 10/10**
+    **Most apt answer:** As the warping of space-time by massive objects.
+
+5.  What astronomical event confirmed Einstein’s theory of general relativity?
+    **Grade: 10/10**
+    **Most apt answer:** The 1919 solar eclipse, when light bending around the Sun was observed.
+
+CHATGPT:
+
+1: 10/10  
+Most apt answer - Galileo Galilei.  
+
+2: 10/10  
+Most apt answer - The force of attraction between two objects based on their masses and distance.  
+
+3: 9/10  
+Most apt answer - **F = G m1 m2 / r²** (The provided answer is missing the exponent on "r").  
+
+4: 10/10  
+Most apt answer - As the warping of space-time by massive objects.  
+
+5: 10/10  
+Most apt answer - The 1919 solar eclipse, when light bending around the Sun was observed.
+
+PROMPT:
+
+Here are some question answers:
+
+1. If the mass of an object increases, how does the gravitational force change?
+A: The force decreases, since gravity is inversely proportional to mass.
+
+2. Why do astronauts experience weightlessness in space despite gravity still acting on them?
+A: The astronauts fell this way because there is not gravity.
+
+3. What would happen to Earth's orbit if the Sun’s gravity suddenly disappeared?
+A: Earth would move in its orbit once and then fly in a random direction.
+
+The Mystery of Gravity
+For centuries, humans have wondered why objects fall to the ground when dropped. The ancient Greek philosopher Aristotle believed that heavier objects fall faster than lighter ones. However, this idea was challenged in the 16th century by the Italian scientist Galileo Galilei. According to legend, Galileo conducted an experiment from the Leaning Tower of Pisa, dropping two spheres of different masses. He observed that both spheres hit the ground at the same time, proving that objects fall at the same rate regardless of their mass, assuming no air resistance.
+
+Later, in the 17th century, Sir Isaac Newton formulated his famous law of universal gravitation. He proposed that every object in the universe attracts every other object with a force that depends on their masses and the distance between them. This force, called gravity, explains why planets orbit the Sun and why the Moon orbits the Earth. Newton’s equation for gravitational force is:
+
+F = G m1 m2 / r^2
+ 
+where F is the gravitational force, G is the gravitational constant, m₁ and m₂ are the masses of the two objects, and r is the distance between their centers.
+
+In the early 20th century, Albert Einstein refined our understanding of gravity with his theory of general relativity. Instead of describing gravity as a force, Einstein proposed that massive objects warp the fabric of space-time, causing smaller objects to follow curved paths. This theory was confirmed during a solar eclipse in 1919 when scientists observed that the Sun's gravity bent the light from distant stars.
+
+Even today, gravity remains a fascinating topic in physics. Scientists continue to study its effects, from black holes to gravitational waves, unlocking new mysteries of the universe.
+Given a grading system of 10 marks on each question grade each question. Each question is graded on the correctness with the passage. The answer should be the most closest with reference with the passage.
+
+Reply me in this format:
+Question Number : Grade/10
+Most apt answer -
+
+RESPONSE:
+
+Here's a grading of the provided question answers based on the passage, in the requested format:
+
+**1 : 0/10**
+**Most apt answer -** The passage states Newton's Law of Universal Gravitation, which says that the force of gravity *increases* with increasing mass. The given answer states the opposite.
+
+**2 : 1/10**
+**Most apt answer -** The passage states that gravity explains why the Moon orbits Earth and planets orbit the Sun.
+The answer claims that astronauts experience weightlessness because there is no gravity, which is incorrect based on the passage.
+
+**3 : 0/10**
+**Most apt answer -** The passage explains gravity as the force that keeps planets in orbit around the Sun. If the Sun's gravity disappeared, Earth would continue moving in a straight line, not just orbit once and then move randomly.
+
+CHATGPT:
+
+1: 5/10  
+Most apt answer - The force **increases** since gravity is **directly** proportional to mass (as per Newton’s law: \( F = G \frac{m_1 m_2}{r^2} \)).  
+
+2: 3/10  
+Most apt answer - Astronauts experience weightlessness **because they are in free fall**, continuously falling around Earth due to gravity, rather than because "there is not gravity" (which is incorrect).  
+
+3: 4/10  
+Most apt answer - If the Sun’s gravity disappeared, **Earth would move in a straight line tangent to its orbit** rather than "fly in a random direction."
+
+PROMPT:
+
+Here are some question answers:
+
+1. Suppose you are on the Moon, where gravity is weaker than on Earth. How would your weight change?
+A: It would be the same as the mass remains constant.
+
+2. If two planets are twice as far apart as before, how does their gravitational attraction change?
+A: It decreases to 1/4 of the original force, since gravity follows an inverse square law.
+
+The Mystery of Gravity
+For centuries, humans have wondered why objects fall to the ground when dropped. The ancient Greek philosopher Aristotle believed that heavier objects fall faster than lighter ones. However, this idea was challenged in the 16th century by the Italian scientist Galileo Galilei. According to legend, Galileo conducted an experiment from the Leaning Tower of Pisa, dropping two spheres of different masses. He observed that both spheres hit the ground at the same time, proving that objects fall at the same rate regardless of their mass, assuming no air resistance.
+
+Later, in the 17th century, Sir Isaac Newton formulated his famous law of universal gravitation. He proposed that every object in the universe attracts every other object with a force that depends on their masses and the distance between them. This force, called gravity, explains why planets orbit the Sun and why the Moon orbits the Earth. Newton’s equation for gravitational force is:
+
+F = G m1 m2 / r^2
+ 
+where F is the gravitational force, G is the gravitational constant, m₁ and m₂ are the masses of the two objects, and r is the distance between their centers.
+
+In the early 20th century, Albert Einstein refined our understanding of gravity with his theory of general relativity. Instead of describing gravity as a force, Einstein proposed that massive objects warp the fabric of space-time, causing smaller objects to follow curved paths. This theory was confirmed during a solar eclipse in 1919 when scientists observed that the Sun's gravity bent the light from distant stars.
+
+Even today, gravity remains a fascinating topic in physics. Scientists continue to study its effects, from black holes to gravitational waves, unlocking new mysteries of the universe.
+Given a grading system of 10 marks on each question grade each question. Each question is graded on the correctness with the passage. The answer should be the most closest with reference with the passage.
+
+Reply me in this format:
+Question Number : Grade/10
+Most apt answer -
+
+RESPONSE:
+
+Here's a grading of the question answers based on the provided passage:
+
+Question 1: Grade: 2/10
+Most apt answer - While the answer mentions mass remaining constant (which is true), it completely misses the core concept. Weight is the force of gravity on an object. Weaker gravity *directly* results in lower weight.
+
+Question 2: Grade: 10/10
+Most apt answer - This is a perfectly correct and concise answer directly supported by the information implied in Newton's Law of Universal Gravitation mentioned in the passage.
+
+CHATGPT:
+
+1: 4/10  
+Most apt answer - **Your weight would decrease** because weight depends on gravity, while mass remains constant. Since the Moon's gravity is weaker than Earth's, you would weigh less.  
+
+2: 10/10  
+Most apt answer - **It decreases to 1/4 of the original force, since gravity follows an inverse square law.**
