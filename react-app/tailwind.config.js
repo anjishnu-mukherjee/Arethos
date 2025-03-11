@@ -4,22 +4,21 @@ export default {
   theme: {
     extend: {
       animation : {
-        "move-blur-bg": "moveBlurBg 85s ease-in-out infinite",
-        "move-bg": "moveBg 100s ease-in-out infinite",
+        "move-blur-bg": "moveBlurBg 105s ease-in-out infinite",
+        "move-bg": "moveBg 80s ease-in-out infinite",
 
       },
       keyframes: {
         moveBlurBg: {
-          "0%": { transform: "translateX(50vw) translateY(-50vw)" },
-          "20%": { transform: "translateX(38vw) translateY(30vw)" },
-          "50%": { transform: "translateX(-50vw) translateY(10vw)" },
-          "100%": { transform: "translateX(50vw) translateY(-50vw)" },
+          "0%": { transform: "translateX(-30vw) translateY(50vw)" },
+          "50%": { transform: "translateX(-90vw) translateY(10vw)" },
+          "75%": { transform: "translateX(-80vw) translateY(50vw)" },
+          "100%": { transform: "translateX(-30vw) translateY(50vw)" },
         },
         moveBg: {
-          "0%": { transform: "translateX(20vw) translateY(30vw)" },
-          "20%": { transform: "translateX(-50vw) translateY(-30vw)" },
-          "80%": { transform: "translateX(50vw) translateY(-20vw)" },
-          "100%": { transform: "translateX(20vw) translateY(30vw)" },
+          "0%": { transform: "translateX(30vw) translateY(-50vw)"},
+          "50%": { transform: "translateX(30vw) translateY(-10vw)" },
+          "100%": { transform: "translateX(30vw) translateY(-50vw)" },
         },
 
       },

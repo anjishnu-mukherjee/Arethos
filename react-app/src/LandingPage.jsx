@@ -5,9 +5,13 @@ import React from "react";
 const LandingPage = () => {
     return (
         <div className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden">
-        <div className="absolute w-[700px] h-[700px] bg-[#53ba5e] rounded-full  blur-3xl opacity-30 animate-move-blur-bg"></div>
-        <div className="absolute w-[400px] h-[400px] bg-[#53ba5e] rounded-full opacity-60 animate-move-bg"></div>
-        <div className="absolute w-[200px] h-[200px] bg-[#53ba5e] rounded-full opacity-80 animate-move-bg shadow-lg"></div>
+        <div className="absolute w-[900px] h-[900px] bg-[#53ba5e] rounded-full  opacity-20 animate-move-blur-bg"></div>
+        
+        <div className="absolute w-[1200px] h-[1200px] bg-[#53ba5e] rounded-full opacity-50  animate-move-bg"></div>
+        <div className="absolute w-[1000px] h-[1000px] bg-[#53ba5e] rounded-full opacity-40  animate-move-bg shadow-lg"></div>
+        <div className="absolute w-[700px] h-[700px] bg-[#53ba5e] rounded-full opacity-40  animate-move-bg shadow-lg"></div>
+        <div className="absolute w-[500px] h-[500px] bg-[#53ba5e] rounded-full opacity-40  animate-move-bg shadow-lg"></div>
+        <div className="absolute w-[300px] h-[300px] bg-[#53ba5e] rounded-full opacity-40  animate-move-bg shadow-lg"></div>
         <div className="relative w-full min-h-screen flex items-center justify-center px-8">
         <h1 className="absolute left-10 top-1 py-10 text-m text-[#EFFBF0]/40 select-none">
         ARETHOS
