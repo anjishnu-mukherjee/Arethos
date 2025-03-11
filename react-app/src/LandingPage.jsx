@@ -5,7 +5,7 @@ import React from "react";
 const LandingPage = () => {
     return (
         <div className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden">
-        <div className="absolute w-[700px] h-[700px] bg-[#53ba5e] rounded-full  blur-3xl opacity-40 animate-move-blur-bg"></div>
+        <div className="absolute w-[700px] h-[700px] bg-[#53ba5e] rounded-full  blur-3xl opacity-30 animate-move-blur-bg"></div>
         <div className="absolute w-[400px] h-[400px] bg-[#53ba5e] rounded-full opacity-60 animate-move-bg"></div>
         <div className="absolute w-[200px] h-[200px] bg-[#53ba5e] rounded-full opacity-80 animate-move-bg shadow-lg"></div>
         <div className="relative w-full min-h-screen flex items-center justify-center px-8">
