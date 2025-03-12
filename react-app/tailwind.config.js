@@ -6,6 +6,7 @@ export default {
       animation : {
         "move-blur-bg": "moveBlurBg 105s ease-in-out infinite",
         "move-bg": "moveBg 80s ease-in-out infinite",
+        "fade-out": "fadeOut 1s forwards"
 
       },
       keyframes: {
@@ -19,6 +20,10 @@ export default {
           "0%": { transform: "translateX(30vw) translateY(-50vw)"},
           "50%": { transform: "translateX(30vw) translateY(-10vw)" },
           "100%": { transform: "translateX(30vw) translateY(-50vw)" },
+        },
+        fadeOut: {
+          "0%": { opacity: "0.4",  },
+          "100%": { opacity: "0", },
         },
 
       },
