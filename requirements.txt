@@ -1,1 +1,6 @@
-google-genai
+google-generativeai
+pinecone-client
+llama-index
+llama-index-llms-gemini
+llama-index-embeddings-gemini
+llama-index-vector-stores-pinecone
