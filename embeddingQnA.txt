@@ -1,9 +1,9 @@
 Question: What is the name of the boy who plays guitar?
-Student Answer: Anjishnu
+Answer: Anjishnu
 Feedback: Correct! Anjishnu is mentioned as a musician and a guitarist in the passage. Well done!
 Score: 10/10
 
 Question: What instrument does Anjishnu play?
-Student Answer: The guitar
+Answer: The guitar
 Feedback: Correct! The passage explicitly states that Anjishnu plays the guitar.
 Score: 10/10

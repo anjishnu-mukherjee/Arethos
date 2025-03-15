@@ -24,12 +24,12 @@ def extract_qa_blocks(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         text = file.read()
 
-    pattern = re.findall(r'Question: (.*?)\nStudent Answer: (.*?)\nFeedback: (.*?)\nScore: (\d+/10)', text, re.DOTALL)
+    pattern = re.findall(r'Question: (.*?)\nAnswer: (.*?)\nFeedback: (.*?)\nScore: (\d+/10)', text, re.DOTALL)
 
     qa_blocks = []
     for match in pattern:
         question, answer, feedback, score = match
-        qa_text = f"Question: {question}\nStudent Answer: {answer}\nFeedback: {feedback}\nScore: {score}"
+        qa_text = f"Question: {question}\nAnswer: {answer}\nFeedback: {feedback}\nScore: {score}"
         qa_blocks.append({
             "question": question, 
             "answer": answer, 
@@ -60,7 +60,7 @@ def embed_and_store(file_path, enable_embedding=True):
                 continue
 
             embedding = get_gemini_embedding(qa["full_text"])
-            vectors.append((str(i), embedding, {"feedback": qa["feedback"], "score": qa["score"]}))
+            vectors.append((str(i), embedding, {"question": qa["question"], "answer": qa["answer"],"feedback": qa["feedback"], "score": qa["score"]}))
         
         # Upload to Pinecone if there are new vectors
         if vectors:

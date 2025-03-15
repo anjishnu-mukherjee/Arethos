@@ -1,6 +1,6 @@
 import embedding
 from pinecone import Pinecone
-import os
+import google.generativeai as genai
 from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.gemini import GeminiEmbedding
 from llama_index.core import Settings
