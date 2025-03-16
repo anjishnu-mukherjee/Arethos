@@ -1,1 +1,3 @@
 google-genai
+pinecone-client
+sentence-transformers
