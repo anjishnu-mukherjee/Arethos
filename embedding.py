@@ -72,3 +72,20 @@ def embed_and_store(file_path, enable_embedding=True):
         print("Skipping embedding as per user request.")
 
 
+def retrieve_relevant_vector(query_text, top_k=2):
+
+    query_embedding = get_gemini_embedding(query_text)
+
+    # Search for similar vectors in Pinecone
+    response = index.query(
+        vector=query_embedding,
+        top_k=top_k,  
+        include_metadata=True 
+    )
+
+    # Extract and return results
+    matches = response.get("matches", [])
+    if matches:
+        return matches 
+    else:
+        return None

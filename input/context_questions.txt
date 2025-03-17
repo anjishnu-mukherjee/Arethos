@@ -1,0 +1,9 @@
+Here is the comprehension :
+    Arjun is deeply passionate about music and spends most of his free time strumming his guitar. 
+    He enjoys experimenting with different melodies and often performs at school events. 
+    His dream is to become a renowned guitarist and inspire others with his music.
+
+New Question:
+    1. What is the name of the boy?
+    2. What instrument does he play?
+    3. What is his dream?
