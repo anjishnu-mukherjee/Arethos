@@ -5,11 +5,6 @@ This project is an AI-driven answer grading system that utilizes Google's Gemini
 ## Table of Contents
 - [Overview](#overview)
 - [How It Works](#how-it-works)
-- [Project Structure](#project-structure)
-- [Setup and Installation](#setup-and-installation)
-- [Usage](#usage)
-- [File Descriptions](#file-descriptions)
-- [Future Enhancements](#future-enhancements)
 
 ---
 
@@ -47,5 +42,4 @@ This system automates the grading process by:
 
 ---
 
-## Project Structure  
 
