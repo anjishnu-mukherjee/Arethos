@@ -10,6 +10,32 @@ function App() {
   const [showConCircles, setShowConCircles] = useState(true);
   const [showCircles, setShowCircles] = useState(true);
   const [pageCount, setPageCount] = useState(0);
+  const [questionFile, setQuestionFile] = useState(null);
+  const [answerFile, setAnswerFile] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
+
+  const handleQuestionFileChange = (event) => {
+    setQuestionFile(event.target.files[0]);
+  };
+  const handleAnswerFileChange = (event) => {
+    setAnswerFile(event.target.files[0]);
+  };
+
+  const handleUpload = () => {
+    if (questionFile && answerFile) {
+      console.log("Question File uploaded:", questionFile.name);
+      console.log("Answer File uploaded:", answerFile.name);
+      // You can add logic to send the file to a backend here
+    } else {
+      alert("Please upload both the files.");
+    }
+  };  
+  const onBackClick = () => {
+    setShowCircles(true);
+    setPageCount(0);
+    setQuestionFile(null);
+   setAnswerFile(null);
+  }
 
   const LandingPageButtonClick = () => {
     // setShowConCircles(false);
@@ -27,56 +53,64 @@ function App() {
   const getVariants = (pageCount) => {
     switch (pageCount) {
       case 0:
-        return{
-            initial: {
-              x: "0vw",
-              y: "60vw",
-              opacity: 0.4, 
-            },
-            animate: {
-              x: ["30vw", "20vw", "40vw","30vw"], 
-              y: ["-50vw", "-20vw", "-50vw","-50vw"],
-              opacity: 0.4, 
-              transition: {
-                duration: 115, 
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            },
-            exit: {
-              opacity: 0, 
-              transition: { duration: 1 },
-            }
-          
-        };
-    case 1:
-      return {
-        initial: {
-          x: "0vw",
-          y: "60vw",
-          opacity: 0, 
-          filter: "blur(0px)", // Start with blur
-        },
-        animate: {
-          x: ["-50vw"], 
-          y: ["0vw"],
-          opacity: [0, 0.15],  // Fade in and out
-          filter: ["blur(10px)","blur(30px)"], // Blur transition
-          transition: {
-            duration: 2, 
-            repeat: 0,
-            ease: "linear",
+        return {
+          initial: {
+            x: "0vw",
+            y: "60vw",
+            opacity: 0.4, // ✅ Reset to visible
+            filter: "blur(0px)", // ✅ No blur
           },
-        },
-        exit: {
-          opacity: 0, 
-          filter: "blur(10px)", // Blur before exiting
-          transition: { duration: 1 },
-        }
-      };
-
+          animate: {
+            x: ["30vw", "20vw", "40vw", "30vw"],
+            y: ["-50vw", "-20vw", "-50vw", "-50vw"],
+            opacity: 0.4, // ✅ Stay at 0.4
+            // filter: "blur(0px)", // ✅ Keep blur at 0
+  
+            transition: {
+              duration: 115,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+          },
+          exit: {
+            opacity: 0, // ✅ Fully fades out
+            filter: "blur(0px)", // ✅ No blur on exit
+            transition: { duration: 1 },
+          },
+        };
+  
+      case 1:
+        return {
+          initial: {
+            x: "0vw",
+            y: "60vw",
+            opacity: 0, // ✅ Start fully invisible
+            filter: "blur(30px)", // ✅ Start with heavy blur
+          },
+          animate: {
+            x: ["-50vw"],
+            y: ["0vw"],
+            opacity: [0, 0.4], // ✅ Gradually fade in
+            filter: ["blur(0px)", "blur(30px)"], // ✅ Smooth blur transition
+  
+            transition: {
+              duration: 2,
+              ease: "linear",
+            },
+          },
+          exit: {
+            opacity: 0, // ✅ Fully fades out when leaving
+            filter: "blur(30px)", // ✅ Increase blur before disappearing
+            transition: { duration: 1 },
+          },
+        };
+  
+      default:
+        return {};
     }
   };
+  
+
   const circleVariants = {
     initial: {
       x: "0vw",
@@ -151,9 +185,21 @@ function App() {
       </AnimatePresence>
 
         <div className="relative w-full min-h-screen flex items-center justify-center px-8">
-        <h1 className="absolute left-10 top-1 py-10 text-m text-[#EFFBF0]/40 select-none">
-        ARETHOS
-        </h1>
+          <div className='absolute left-10 top-1 py-1 flex flex-row items-center'>
+            {pageCount>0 ?  (
+            <button
+            onClick={onBackClick}>
+            <span className="material-symbols-outlined text-4xl text-[#EFFBF0]/40 px-e-5 py-1">
+            keyboard_backspace
+              </span>
+            </button>
+            ):(
+              <div className='py-6'></div>
+            )}
+          <h1 onClick={onBackClick}  className="text-m text-[#EFFBF0]/40 select-none cursor-pointer">
+          ARETHOS
+          </h1>
+        </div>
         <AnimatePresence mode="wait">
           {(() => {
             switch (pageCount) {
@@ -179,7 +225,7 @@ function App() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}
                   >
-                    <UploadScreen />
+                    <UploadScreen  handleQuestionFileChange={handleQuestionFileChange} questionFile={questionFile} handleAnswerFileChange={handleAnswerFileChange} answerFile={answerFile} handleUpload={handleUpload} />
                   </motion.div>
                 );
 
