@@ -1,86 +1,122 @@
-def convert_question_paper_to_list(questions : str):
+import json
+import os
+import re
+from google import genai
+from embedding import retrieve_relevant_vector
+
+def convert_question_paper_to_list(questions: str):
+    """Extracts individual questions from a structured question paper format."""
     raw_lines = questions.splitlines()
     section_list = []
-    i = 0
-    j = 1
+    current_section = []
 
-    while(j<len(raw_lines)):
-        if "SECTION" in raw_lines[i] and "SECTION" in raw_lines[j]:
-            section_list.append("\n".join(raw_lines[i+1:j-1]))
-            i = j
-            j = i+1
-        if  "SECTION" not in raw_lines[i]:
-            i+=1
-        if  "SECTION" not in raw_lines[j]:
-            j+=1
-        
+    for line in raw_lines:
+        if line.startswith("SECTION"):
+            if current_section:
+                section_list.extend(current_section)
+            current_section = []
+        elif line.strip():
+            current_section.append(line.strip())
+
+    if current_section:
+        section_list.extend(current_section)
 
     return section_list
 
-def convert_answers_to_list(answers:str):
+def convert_answers_to_list(answers: str):
+    """Extracts individual answers corresponding to the questions."""
     raw_lines = answers.splitlines()
-    answer_sections = []
-    i = 0
-    j = 1
+    answer_list = []
+    current_section = []
 
-    while(j<len(raw_lines)):
-        if "SECTION" in raw_lines[i] and "SECTION" in raw_lines[j]:
-            answer_sections.append("\n".join(raw_lines[i+1:j-1]))
-            i = j
-            j = i+1
-        if  "SECTION" not in raw_lines[i]:
-            i+=1
-        if  "SECTION" not in raw_lines[j]:
-            j+=1
-    
-    return answer_sections
+    for line in raw_lines:
+        if line.startswith("SECTION"):
+            if current_section:
+                answer_list.extend(current_section)
+            current_section = []
+        elif line.strip():
+            current_section.append(line.strip())
+
+    if current_section:
+        answer_list.extend(current_section)
+
+    return answer_list
 
 def get_similar_questions(prompt : str) -> str:
-    #TODO
-    """
-    This function will take a prompt (question answer string) and return top K similar questions from the pinecone database.
-    Join the K responses using "\n" and return as a string.
-    """
-    return ""
+    matches = retrieve_relevant_vector(prompt, top_k=2) or []
+    similars = ""
+    for match in matches:
+        metadata = match.get("metadata", {})
+        similars += f"Question: {metadata.get('question', 'N/A')}\n"
+        similars += f"Answer: {metadata.get('answer', 'N/A')}\n"
+        similars += f"Feedback: {metadata.get('feedback', 'N/A')}\n"
+        similars += f"Score: {metadata.get('score', 'N/A')}\n\n"
+    
+    return similars.strip()
 
-def get_prompt_list(questions : str,answers : str):
+def get_prompt_list(questions: str, answers: str):
+    """Generates individual prompts for each question-answer pair."""
     question_list = convert_question_paper_to_list(questions)
-    answers_list = convert_answers_to_list(answers)
+    answer_list = convert_answers_to_list(answers)
+
+    if len(question_list) != len(answer_list):
+        raise ValueError("Mismatch between the number of questions and answers.")
 
     prompt_list = []
 
     for i in range(len(question_list)):
         raw_prompt = f"""
-        {question_list[i]}
-        {answers_list[i]}
-                """
+        Question: {question_list[i]}
+        Answer: {answer_list[i]}
+        """
+
         similars = get_similar_questions(raw_prompt)
 
-        prompt =f"""
-                {similars}\n
-                {raw_prompt}
-                """
+        prompt = f"""
+        {similars}\n
+        {raw_prompt}
+        """
         prompt_list.append(prompt)
 
     return prompt_list
 
-def generate_gemini_resp(question:str, answers:str):
+def generate_gemini_resp(questions: str, answers: str):
+    prompt_list = get_prompt_list(questions, answers)
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+    response_list = []
 
-    prompt_list = get_prompt_list(question,answers)
-    response_list = [];
-
-    #TODO
-    """
-    Use the prompt_list to generate responses using the Google's Gemini model.
-    Append the responses to the response_list as a dict in the following format:
-    response_list : [
-            { 
-                "question":<>,
-                "answer":<>
-            },
-            ...
+    for prompt in prompt_list:
+        json_prompt = f"""
+        Given the following question and student answer, provide a structured JSON response.
+        Format:
+        {{
+            "context": "Explanation of grading criteria",
+            "qa_pairs": [
+                {{
+                    "question": "Original question",
+                    "answer": "Student's answer",
+                    "feedback": "Detailed feedback",
+                    "score": "Numeric score out of 10"
+                }}
             ]
-    """
+        }}
+        
+        {prompt}
+        """
+
+        response = client.models.generate_content(model="gemini-2.0-flash", contents=json_prompt)
+        raw_text = response.text.strip()
+        cleaned_text = re.sub(r"^```json|```$", "", raw_text).strip()
+
+        try:
+            json_data = json.loads(cleaned_text)
+            response_list.append({
+                "context": json_data.get("context", ""),
+                "qa_pairs": json_data.get("qa_pairs", [])
+            })
+        except json.JSONDecodeError:
+            print("Error: Could not parse JSON from Gemini response.")
+            print("Raw response:", raw_text)
 
     return response_list
 
