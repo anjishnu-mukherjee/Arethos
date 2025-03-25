@@ -1,10 +1,12 @@
 import os
+from dotenv import load_dotenv
 from pinecone import Pinecone
 from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.gemini import GeminiEmbedding
 from llama_index.core import Settings
 from keys import GEMINI_API,PINECONE_API
 
+load_dotenv()
 # Setting up LLM and Embeddings
 llm = Gemini(api_key=os.environ["GEMINI_API"])
 llm_embedding = GeminiEmbedding(model_name="models/embedding-001")
