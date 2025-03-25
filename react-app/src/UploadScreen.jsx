@@ -4,10 +4,79 @@ import { useState } from "react";
 
 
 
-const UploadScreen=( {handleQuestionFileChange, questionFile ,handleAnswerFileChange , answerFile, handleUpload})=>{
+const UploadScreen=( )=>{//{handleQuestionFileChange, questionFile ,handleAnswerFileChange , answerFile, handleUpload})=>{
+  const [questionFile, setQuestionFile] = useState(null);
+  const [answerFile, setAnswerFile] = useState(null);
   const [showHelp, setShowHelp] = useState(true);
+  const [responseData, setResponseData] = useState(null);
+const [isLoading, setLoadingState] = useState(-1);
+
+const handleQuestionFileChange = (event) => {
+    setQuestionFile(event.target.files[0]);
+};
+
+const handleAnswerFileChange = (event) => {
+    setAnswerFile(event.target.files[0]);
+};
+
+const handleUpload = () => {
+    if (!questionFile || !answerFile) {
+        alert("Please upload both files.");
+        return;
+    }
+
+    setLoadingState(0); // Start loading
+
+    const readerQ = new FileReader();
+    const readerA = new FileReader();
+
+    readerQ.onload = (e) => {
+        const questionText = e.target.result;
+
+        readerA.onload = (e) => {
+            const answerText = e.target.result;
+
+            fetch("http://localhost:7071/api/geminiResponse", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ questions: questionText, answers: answerText })
+            })
+            .then(response => {
+                console.log("Response Status:", response.status);
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then(data => {
+              // Assuming `responseData` contains the API response
+              if (data && data.length > 0) {
+                const extractedData = data[0].qa_pairs.map((qa) => ({
+                  question: qa.question,
+                  answer: qa.answer,
+                  feedback: qa.feedback,
+                  score: qa.score,
+                }));
+                
+                  setResponseData(extractedData);
+                  console.log(extractedData);
+                }
+                setLoadingState(1); // Success
+                console.log("Recived Response");
+            })
+            .catch(error => {
+                setLoadingState(-1); // Error
+                console.error("Error calling API:", error);
+            });
+        };
+
+        readerA.readAsText(answerFile);
+    };
+
+    readerQ.readAsText(questionFile);
+};
+
   
     return (
+      <div className="flex flex-col">
         <div className="flex flex-col">
             <div className="absolute left-20 top-1/4 flex flex-col">
             {questionFile ? (
@@ -60,8 +129,29 @@ const UploadScreen=( {handleQuestionFileChange, questionFile ,handleAnswerFileCh
             EVALUATE&nbsp;
            <span class="material-symbols-outlined text-5xl">trending_flat</span>
             </button>
+            { isLoading===-1 &&
             <HelpSection showHelp={showHelp} setShowHelp={setShowHelp} />
+          }
         </div>
+        <div className="absolute right-20 top-1/2 transform -translate-y-1/2 max-h-[85vh] space-y-8 p-4">
+        {isLoading===0&&
+        <div className="flex justify-center items-center h-40">
+        <div className="w-40 h-40 border-4 border-t-transparent border-[#6BDB76]/70 rounded-full animate-spin"></div>
+        </div>
+        }
+        </div>
+        <div className="absolute right-5 top-1/2 transform -translate-y-1/2 max-h-[85vh] overflow-y-auto space-y-8 p-4">
+        {isLoading===1 && responseData && responseData.length > 0 && 
+          responseData.map((qa, index) => (
+            <ResponseSecion 
+              key={index} 
+              question={qa.question} 
+              answer={`${qa.answer}\n${qa.feedback}\nScore: ${qa.score}`} 
+            />
+          ))
+        }
+        </div>
+      </div>
     );
 };
 
@@ -130,5 +220,15 @@ const HelpText = () => {
   );
 };
 
+
+const ResponseSecion=({question,answer})=>{
+  return(
+    <div className="flex flex-col w-[1000px] ">
+      <h1 className="text-left text-[#EFFBF0] p-7 bg-[#6BDB76]/10 rounded-3xl">{question}</h1>
+      <div className="h-3"></div>
+      <h1 className="text-left text-[#EFFBF0] p-7 bg-[#6BDB76]/20 rounded-3xl">{answer}</h1>
+    </div>
+  );
+};
 
 export default UploadScreen

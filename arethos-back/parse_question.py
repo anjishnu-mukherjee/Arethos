@@ -3,6 +3,7 @@ import os
 import re
 from google import genai
 from embedding import retrieve_relevant_vector
+from keys import GEMINI_API
 
 def convert_question_paper_to_list(questions: str):
     """Extracts individual questions from a structured question paper format."""
@@ -20,8 +21,9 @@ def convert_question_paper_to_list(questions: str):
 
     if current_section:
         section_list.extend(current_section)
-
-    return section_list
+    
+    # print("Section list:", len(section_list))
+    return ["\n".join(section_list)]
 
 def convert_answers_to_list(answers: str):
     """Extracts individual answers corresponding to the questions."""
@@ -40,7 +42,9 @@ def convert_answers_to_list(answers: str):
     if current_section:
         answer_list.extend(current_section)
 
-    return answer_list
+    # print("Answer list:", len(answer_list))
+
+    return ["\n".join(answer_list)]
 
 def get_similar_questions(prompt : str) -> str:
     matches = retrieve_relevant_vector(prompt, top_k=2) or []
@@ -82,7 +86,9 @@ def get_prompt_list(questions: str, answers: str):
 
 def generate_gemini_resp(questions: str, answers: str):
     prompt_list = get_prompt_list(questions, answers)
-    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+    print("comming here")
+    client = genai.Client(api_key=os.environ["GEMINI_API"])
+    print("passing this")
     response_list = []
 
     for prompt in prompt_list:

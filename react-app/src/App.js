@@ -10,31 +10,18 @@ function App() {
   const [showConCircles, setShowConCircles] = useState(true);
   const [showCircles, setShowCircles] = useState(true);
   const [pageCount, setPageCount] = useState(0);
-  const [questionFile, setQuestionFile] = useState(null);
-  const [answerFile, setAnswerFile] = useState(null);
+  
   const [showHelp, setShowHelp] = useState(false);
 
-  const handleQuestionFileChange = (event) => {
-    setQuestionFile(event.target.files[0]);
-  };
-  const handleAnswerFileChange = (event) => {
-    setAnswerFile(event.target.files[0]);
-  };
+  
 
-  const handleUpload = () => {
-    if (questionFile && answerFile) {
-      console.log("Question File uploaded:", questionFile.name);
-      console.log("Answer File uploaded:", answerFile.name);
-      // You can add logic to send the file to a backend here
-    } else {
-      alert("Please upload both the files.");
-    }
-  };  
+
+  
   const onBackClick = () => {
     setShowCircles(true);
     setPageCount(0);
-    setQuestionFile(null);
-   setAnswerFile(null);
+    // setQuestionFile(null);
+  //  setAnswerFile(null);
   }
 
   const LandingPageButtonClick = () => {
@@ -225,7 +212,8 @@ function App() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}
                   >
-                    <UploadScreen  handleQuestionFileChange={handleQuestionFileChange} questionFile={questionFile} handleAnswerFileChange={handleAnswerFileChange} answerFile={answerFile} handleUpload={handleUpload} />
+                    <UploadScreen /> 
+                     {/* handleQuestionFileChange={handleQuestionFileChange} questionFile={questionFile} handleAnswerFileChange={handleAnswerFileChange} answerFile={answerFile} handleUpload={handleUpload} /> */}
                   </motion.div>
                 );
 
