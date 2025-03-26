@@ -36,7 +36,7 @@ const handleUpload = () => {
         readerA.onload = (e) => {
             const answerText = e.target.result;
 
-            fetch("http://localhost:7071/api/geminiResponse", {
+            fetch("https://arethosapi.azurewebsites.net/api/geminiresponse?code=RKzCvpXOxUzBMrMsKUZ-eWX9sEWYPZapm303XQF7DNa7AzFu3gGPSQ==", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ questions: questionText, answers: answerText })
