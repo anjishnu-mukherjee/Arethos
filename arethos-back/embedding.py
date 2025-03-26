@@ -21,7 +21,7 @@ index = pinecone_client.Index(name="arethos-a")
 def get_gemini_embedding(text):
     return llm_embedding.get_text_embedding(text)
 
-def retrieve_relevant_vector(query_text, top_k=2):
+def retrieve_relevant_vector(query_text, top_k=5):
 
     query_embedding = get_gemini_embedding(query_text)
 
