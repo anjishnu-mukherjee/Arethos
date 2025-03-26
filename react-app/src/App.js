@@ -184,7 +184,7 @@ function App() {
               <div className='py-6'></div>
             )}
           <h1 onClick={onBackClick}  className="text-m text-[#EFFBF0]/40 select-none cursor-pointer">
-          ARETHOS
+          FLIPBIT
           </h1>
         </div>
         <AnimatePresence mode="wait">
