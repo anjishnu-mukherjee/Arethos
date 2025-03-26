@@ -1,0 +1,9 @@
+azure_storage
+llama_index
+pinecone
+protobuf
+llama-index
+llama-index-llms-gemini
+llama-index-embeddings-gemini
+llama-index-vector-stores-pinecone
+google-genai
