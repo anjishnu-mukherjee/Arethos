@@ -103,7 +103,7 @@ def generate_gemini_resp(questions: str, answers: str):
                     "question": "Original question",
                     "answer": "Student's answer",
                     "feedback": "Detailed feedback",
-                    "score": "Numeric score out of 10"
+                    "score": "[1-10]/10"
                 }}
             ]
         }}
