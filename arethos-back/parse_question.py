@@ -1,10 +1,11 @@
 import json
 import os
 import re
+from dotenv import load_dotenv
 from google import genai
 from embedding import retrieve_relevant_vector
-from keys import GEMINI_API
 
+load_dotenv()
 def convert_question_paper_to_list(questions: str):
     """Extracts individual questions from a structured question paper format."""
     raw_lines = questions.splitlines()
@@ -87,7 +88,7 @@ def get_prompt_list(questions: str, answers: str):
 def generate_gemini_resp(questions: str, answers: str):
     prompt_list = get_prompt_list(questions, answers)
     print("comming here")
-    client = genai.Client(api_key=os.environ["GEMINI_API"])
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
     print("passing this")
     response_list = []
 
@@ -125,4 +126,3 @@ def generate_gemini_resp(questions: str, answers: str):
             print("Raw response:", raw_text)
 
     return response_list
-

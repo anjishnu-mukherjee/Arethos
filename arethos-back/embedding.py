@@ -4,11 +4,10 @@ from pinecone import Pinecone
 from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.gemini import GeminiEmbedding
 from llama_index.core import Settings
-from keys import GEMINI_API,PINECONE_API
 
 load_dotenv()
 # Setting up LLM and Embeddings
-llm = Gemini(api_key=os.environ["GEMINI_API"])
+llm = Gemini(api_key=os.environ["GEMINI_API_KEY"])
 llm_embedding = GeminiEmbedding(model_name="models/embedding-001")
 
 Settings.llm = llm
@@ -16,7 +15,7 @@ Settings.embed_model = llm_embedding
 Settings.chunk_size = 1024
 
 # Initialize Pinecone Client
-pinecone_client = Pinecone(api_key=os.environ["PINECONE_API"])
+pinecone_client = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 index = pinecone_client.Index(name="arethos-a")
 
 def get_gemini_embedding(text):
