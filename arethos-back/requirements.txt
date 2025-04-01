@@ -7,3 +7,7 @@ llama-index-llms-gemini
 llama-index-embeddings-gemini
 llama-index-vector-stores-pinecone
 google-genai
+azure-storage-blob
+PyMuPDF
+pdf2image
+python-dotenv
