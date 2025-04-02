@@ -1,13 +1,11 @@
-azure_storage
-llama_index
-pinecone
-protobuf
+python-dotenv
 llama-index
 llama-index-llms-gemini
 llama-index-embeddings-gemini
 llama-index-vector-stores-pinecone
+pinecone
+protobuf
 google-genai
 azure-storage-blob
 PyMuPDF
 pdf2image
-python-dotenv

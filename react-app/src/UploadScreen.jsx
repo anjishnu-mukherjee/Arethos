@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import getFileUrl from "./BlobStorage"
 
 
 
@@ -7,71 +8,85 @@ import { useState } from "react";
 const UploadScreen=( )=>{//{handleQuestionFileChange, questionFile ,handleAnswerFileChange , answerFile, handleUpload})=>{
   const [questionFile, setQuestionFile] = useState(null);
   const [answerFile, setAnswerFile] = useState(null);
+  const [questionFileUrl, setQuestionFileUrl] = useState(null);
+  const [answerFileUrl, setAnswerFileUrl] = useState(null);
   const [showHelp, setShowHelp] = useState(true);
   const [responseData, setResponseData] = useState(null);
-const [isLoading, setLoadingState] = useState(-1);
+  const [isLoading, setLoadingState] = useState(-1);
 
-const handleQuestionFileChange = (event) => {
-    setQuestionFile(event.target.files[0]);
-};
 
-const handleAnswerFileChange = (event) => {
-    setAnswerFile(event.target.files[0]);
-};
+  const handleQuestionFileChange = async (event) => {
+    const selectedFile = event.target.files[0]; // Get the File object
+    if (!selectedFile) return;
+
+    setQuestionFile(selectedFile); // Store file in state if needed
+
+    try {
+        const uploadedFileUrl = await getFileUrl(selectedFile); // Upload the file
+        setQuestionFileUrl(uploadedFileUrl)
+        console.log("File uploaded successfully. URL:", uploadedFileUrl);
+    } catch (error) {
+        console.error("File upload failed:", error);
+    }
+  };
+  const handleAnswerFileChange = async (event) => {
+    const selectedFile = event.target.files[0]; // Get the File object
+    if (!selectedFile) return;
+
+    setAnswerFile(selectedFile); // Store file in state if needed
+
+    try {
+        const uploadedFileUrl = await getFileUrl(selectedFile); // Upload the file
+        setAnswerFileUrl(uploadedFileUrl)
+
+        console.log("File uploaded successfully. URL:", uploadedFileUrl);
+    } catch (error) {
+        console.error("File upload failed:", error);
+    }
+  };
+
 
 const handleUpload = () => {
     if (!questionFile || !answerFile) {
         alert("Please upload both files.");
         return;
     }
+    if (!questionFileUrl || !answerFileUrl) {
+        alert("Couldn't Generate SAS link.");
+        return;
+    }
 
     setLoadingState(0); // Start loading
-
-    const readerQ = new FileReader();
-    const readerA = new FileReader();
-
-    readerQ.onload = (e) => {
-        const questionText = e.target.result;
-
-        readerA.onload = (e) => {
-            const answerText = e.target.result;
-
-            fetch("https://arethosapi.azurewebsites.net/api/geminiresponse?code=RKzCvpXOxUzBMrMsKUZ-eWX9sEWYPZapm303XQF7DNa7AzFu3gGPSQ==", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ questions: questionText, answers: answerText })
-            })
-            .then(response => {
-                console.log("Response Status:", response.status);
-                if (!response.ok) throw new Error("Network response was not ok");
-                return response.json();
-            })
-            .then(data => {
-              // Assuming `responseData` contains the API response
-              if (data && data.length > 0) {
-                const extractedData = data[0].qa_pairs.map((qa) => ({
-                  question: qa.question,
-                  answer: qa.answer,
-                  feedback: qa.feedback,
-                  score: qa.score,
-                }));
-                
-                  setResponseData(extractedData);
-                  console.log(extractedData);
-                }
-                setLoadingState(1); // Success
-                console.log("Recived Response");
-            })
-            .catch(error => {
-                setLoadingState(-1); // Error
-                console.error("Error calling API:", error);
-            });
-        };
-
-        readerA.readAsText(answerFile);
-    };
-
-    readerQ.readAsText(questionFile);
+// https://arethosapi.azurewebsites.net/api/geminiresponse?code=RKzCvpXOxUzBMrMsKUZ-eWX9sEWYPZapm303XQF7DNa7AzFu3gGPSQ==
+    fetch("https://arethosapi.azurewebsites.net/api/geminiresponse?code=RKzCvpXOxUzBMrMsKUZ-eWX9sEWYPZapm303XQF7DNa7AzFu3gGPSQ==", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ questions: questionFileUrl, answers: answerFileUrl })
+    })
+    .then(response => {
+        console.log("Response Status:", response.status);
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+    })
+    .then(data => {
+      if (data && data.length > 0) {
+        const extractedData = data[0].qa_pairs.map((qa) => ({
+          question: qa.question,
+          answer: qa.answer,
+          feedback: qa.feedback,
+          score: qa.score,
+        }));
+        
+          setResponseData(extractedData);
+          console.log(extractedData);
+        }
+        setLoadingState(1); // Success
+        console.log("Recived Response");
+    })
+    .catch(error => {
+        setLoadingState(-1); // Error
+        console.error("Error calling API:", error);
+    });
 };
 
   

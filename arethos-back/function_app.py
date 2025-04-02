@@ -4,12 +4,7 @@ import logging
 from utils.parse_question import generate_gemini_resp,get_data_from_file
 from utils.blob_storage import generate_sas_token, get_blob_data
 
-
-
 app = func.FunctionApp()
-import json
-import logging
-import azure.functions as func
 
 @app.route(route="geminiResponse", auth_level=func.AuthLevel.FUNCTION)
 def geminiResponse(req: func.HttpRequest) -> func.HttpResponse:
@@ -35,10 +30,21 @@ def geminiResponse(req: func.HttpRequest) -> func.HttpResponse:
             answers = str(req_body.get('answers', answers))  
 
             question_file_path,question_type = get_blob_data(question)
-            ans_file_path,answer_type = get_blob_data(question)
+            ans_file_path,answer_type = get_blob_data(answers)
 
-            question_file_data = get_data_from_file(question_file_path,question_type)
-            answer_file_data = get_data_from_file(ans_file_path,answer_type)
+            print("Question file type:",question_type)
+            print("Answer file type:",answer_type)
+
+            if question_type != None and question_type != None:
+                question_file_data = get_data_from_file(question_file_path,question_type)
+                answer_file_data = get_data_from_file(ans_file_path,answer_type)
+            else:
+                return func.HttpResponse(
+                    json.dumps({"error": "Invalid file type"}),
+                    status_code=400,
+                    mimetype="application/json",
+                    headers={"Access-Control-Allow-Origin": "*"}
+                )
             
         except ValueError:
             return func.HttpResponse(

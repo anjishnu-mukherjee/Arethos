@@ -21,7 +21,7 @@ def generate_sas_token(file_name):
             container_name=AZURE_BLOB_CONTAINER,
             blob_name=file_name,
             account_key=AZURE_STORAGE_ACCOUNT_KEY,
-            permission=BlobSasPermissions(write=True),
+            permission=BlobSasPermissions(read=True, write=True),
             expiry=datetime.datetime.now(datetime.timezone.utc) + timedelta(hours=1)  # Expiry set to 1 hour
         )
         blob_url = f"https://{AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_BLOB_CONTAINER}/{file_name}?{sas_token}"
@@ -35,6 +35,7 @@ def get_blob_data(sas_url):
     # sas_url = https://aristoragev01.blob.core.windows.net/arethos/test_file.pdf?se=2025-04-01T19%3A00%3A57Z&sp=w&sv=2025-05-05&sr=b&sig=prjpYe2ctiIY5Q%2Bpd75KrDgg8GATM9IaI7hipGZ4x4Y%3D
 
     file_name = sas_url.split("/")[-1].split("?")[0]  # Extract file name from URL
+    print(sas_url)
     try:
         blob_client = BlobClient.from_blob_url(sas_url)
         blob_data = blob_client.download_blob().readall()
@@ -45,7 +46,7 @@ def get_blob_data(sas_url):
         raise
 
 
-def save_blob_data(blob_data, file_name, output_dir="tmp"):
+def save_blob_data(blob_data, file_name, output_dir="/tmp"):
     """Save blob data in the respective format."""
     os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
     file_path = os.path.join(output_dir, file_name)
