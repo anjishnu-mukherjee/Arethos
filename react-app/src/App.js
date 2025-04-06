@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import LandingPage from './LandingPage';
 import React, { useState } from "react";
@@ -7,13 +6,10 @@ import UploadScreen from './UploadScreen';
 
 
 function App() {
-  const [showConCircles, setShowConCircles] = useState(true);
+  const [showConCircles] = useState(true);
   const [showCircles, setShowCircles] = useState(true);
   const [pageCount, setPageCount] = useState(0);
-  
-  const [showHelp, setShowHelp] = useState(false);
 
-  
 
 
   
@@ -98,27 +94,27 @@ function App() {
   };
   
 
-  const circleVariants = {
-    initial: {
-      x: "0vw",
-      y: "60vw",
-      opacity: 0.4, 
-    },
-    animate: {
-      x: ["30vw", "20vw", "40vw","30vw"], 
-      y: ["-50vw", "-20vw", "-50vw","-50vw"],
-      opacity: 0.4, 
-      transition: {
-        duration: 115, 
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
-    exit: {
-      opacity: 0, 
-      transition: { duration: 1 },
-    },
-  };
+  // const circleVariants = {
+  //   initial: {
+  //     x: "0vw",
+  //     y: "60vw",
+  //     opacity: 0.4, 
+  //   },
+  //   animate: {
+  //     x: ["30vw", "20vw", "40vw","30vw"], 
+  //     y: ["-50vw", "-20vw", "-50vw","-50vw"],
+  //     opacity: 0.4, 
+  //     transition: {
+  //       duration: 115, 
+  //       repeat: Infinity,
+  //       ease: "easeInOut",
+  //     },
+  //   },
+  //   exit: {
+  //     opacity: 0, 
+  //     transition: { duration: 1 },
+  //   },
+  // };
 
   const lowerCircleVariants = {
     initial: {
@@ -143,7 +139,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App text-[0.8]">
       <div className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden">
         <AnimatePresence>
           {showCircles && 
