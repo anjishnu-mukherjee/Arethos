@@ -6,29 +6,41 @@ from google import genai
 from utils.embedding import retrieve_relevant_vector
 from utils.imageAnalysis import analyze_image
 from utils.pdf_eval import convert_pdf_txt
+import logging
 
 load_dotenv()
 
-def get_data_from_file(file_path: str,file_type : str) -> str:
+def get_data_from_file(file_path: str, file_type: str) -> str:
+    logging.info(f"Reading file: {file_path}, Type: {file_type}")
+
+    if not isinstance(file_type, str):
+        logging.error(f"Invalid file_type: {file_type}")
+        raise ValueError(f"Invalid file_type: {file_type}")
+    
+    if not isinstance(file_type, str):
+        raise ValueError(f"Invalid file_type: {file_type}")
+
+    file_data = ""  # Always initialize
+
     if file_type.startswith("image"):
-            # read image as binary file
-                with open(file_path, "rb") as img_file:
-                    image_data = img_file.read()
-                    file_data = analyze_image(image_data)
+        with open(file_path, "rb") as img_file:
+            image_data = img_file.read()
+            file_data = analyze_image(image_data)
 
     elif file_type == "application/pdf":
-                # read as PDF
-                txt_path = convert_pdf_txt(file_path)
-                with open(txt_path, "r") as file:
-                    file_data = file.read()
-                
+        txt_path = convert_pdf_txt(file_path)
+        with open(txt_path, "r") as file:
+            file_data = file.read()
 
     elif file_type.startswith("text"):
-                # read as text
-                with open(file_path, "r") as file:
-                    file_data = file.read()
-    
+        with open(file_path, "r") as file:
+            file_data = file.read()
+
+    else:
+        raise ValueError(f"Unsupported file_type: {file_type}")
+
     return file_data
+
 
 
 def convert_question_paper_to_list(questions: str):
@@ -120,6 +132,7 @@ def generate_gemini_resp(questions: str, answers: str):
     for prompt in prompt_list:
         json_prompt = f"""
         Given the following question and student answer, provide a structured JSON response.
+        and make sure that the score is between 1-10 and whole number.
         Format:
         {{
             "context": "Explanation of grading criteria",

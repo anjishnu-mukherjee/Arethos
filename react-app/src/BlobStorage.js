@@ -23,8 +23,6 @@ const getFileUrl = async (file) => {
                 "Content-Type": file.type,
             },
         });
-
-        console.log("File uploaded successfully:", sasUrl);
         return sasUrl;
     } catch (error) {
         console.error("Upload error:", error);

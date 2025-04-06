@@ -8,6 +8,8 @@ import getFileUrl from "./BlobStorage"
 const UploadScreen=( )=>{//{handleQuestionFileChange, questionFile ,handleAnswerFileChange , answerFile, handleUpload})=>{
   const [questionFile, setQuestionFile] = useState(null);
   const [answerFile, setAnswerFile] = useState(null);
+  const [questionFileUploaded, setQuestionUploadState] = useState(false);
+  const [answerFileUploaded, setAnswerUploadState] = useState(false);
   const [questionFileUrl, setQuestionFileUrl] = useState(null);
   const [answerFileUrl, setAnswerFileUrl] = useState(null);
   const [showHelp, setShowHelp] = useState(true);
@@ -16,11 +18,13 @@ const UploadScreen=( )=>{//{handleQuestionFileChange, questionFile ,handleAnswer
 
 
   const handleQuestionFileChange = async (event) => {
+    setQuestionUploadState(true)
     const selectedFile = event.target.files[0]; // Get the File object
-    if (!selectedFile) return;
-
+    if (!selectedFile){
+      setQuestionUploadState(false)
+      return;
+    }
     setQuestionFile(selectedFile); // Store file in state if needed
-
     try {
         const uploadedFileUrl = await getFileUrl(selectedFile); // Upload the file
         setQuestionFileUrl(uploadedFileUrl)
@@ -28,21 +32,31 @@ const UploadScreen=( )=>{//{handleQuestionFileChange, questionFile ,handleAnswer
     } catch (error) {
         console.error("File upload failed:", error);
     }
+    finally{
+    // if (questionFileUrl!=null) {
+    setQuestionUploadState(false); // Always runs after try/catch
+    // }
+  }
+    
   };
   const handleAnswerFileChange = async (event) => {
+    setAnswerUploadState(true)
     const selectedFile = event.target.files[0]; // Get the File object
     if (!selectedFile) return;
-
+    setAnswerUploadState(false)
     setAnswerFile(selectedFile); // Store file in state if needed
 
     try {
         const uploadedFileUrl = await getFileUrl(selectedFile); // Upload the file
         setAnswerFileUrl(uploadedFileUrl)
-
         console.log("File uploaded successfully. URL:", uploadedFileUrl);
     } catch (error) {
         console.error("File upload failed:", error);
     }
+    if(answerFileUrl) {
+      setAnswerUploadState(false)
+    }
+    
   };
 
 
@@ -52,7 +66,7 @@ const handleUpload = () => {
         return;
     }
     if (!questionFileUrl || !answerFileUrl) {
-        alert("Couldn't Generate SAS link.");
+        alert("Couldn't Generate SAS link. Please Try again. Uploads hold a cold start wait till the file is properly uploaded");
         return;
     }
 
@@ -89,61 +103,86 @@ const handleUpload = () => {
     });
 };
 
-  
+const isUploading = questionFileUploaded || answerFileUploaded;
     return (
       <div className="flex flex-col">
         <div className="flex flex-col">
             <div className="absolute left-20 top-1/4 flex flex-col">
-            {questionFile ? (
-              <label className="flex items-center text-[#EFFBF0] text-base py-3 px-12 rounded-full transition duration-500 ease-in-out bg-[#6BDB76]/20 backdrop-blur-md hover:bg-[#6BDB76]/40 active:text-[#6BDB76] select-none cursor-pointer">
-                <span className="material-symbols-outlined text-5xl">remove</span>&nbsp;{questionFile.name}
-                <input 
-                  type="file" 
-                  accept=".txt"
-                  onChange={handleQuestionFileChange} 
-                  className="hidden" 
-                />
-              </label>
-            ) : (
-              <label className="flex items-center text-[#EFFBF0] text-base py-3 px-12 rounded-full transition duration-500 ease-in-out bg-[#6BDB76]/20 backdrop-blur-md hover:bg-[#6BDB76]/40 active:text-[#6BDB76] select-none cursor-pointer">
-                <span className="material-symbols-outlined text-5xl">add</span>&nbsp;ADD QUESTION PAPER
-                <input 
-                  type="file" 
-                  accept=".txt"
-                  onChange={handleQuestionFileChange} 
-                  className="hidden"  
-                />
-              </label>
-            )}
-            <div className="h-7"></div>
-            {answerFile ? (
-              <label className="flex items-center text-[#EFFBF0] text-base py-3 px-14 rounded-full transition duration-500 ease-in-out bg-[#6BDB76]/20 backdrop-blur-md hover:bg-[#6BDB76]/40 active:text-[#6BDB76] select-none cursor-pointer">
-                  <span className="material-symbols-outlined text-5xl">remove</span>&nbsp;{answerFile.name}
-                  <input 
-                    type="file" 
-                    accept=".txt"
-                    onChange={handleAnswerFileChange} 
-                    className="hidden"  // Hides the default input styling
-                  />
-              </label>
-            ) : (
-              <label className="flex items-center text-[#EFFBF0] text-base py-3 px-14 rounded-full transition duration-500 ease-in-out bg-[#6BDB76]/20 backdrop-blur-md hover:bg-[#6BDB76]/40 active:text-[#6BDB76] select-none cursor-pointer">
-                <span className="material-symbols-outlined text-5xl">add</span>&nbsp;ADD ANSWER SHEET
-                <input 
-                  type="file" 
-                  accept=".txt"
-                  onChange={handleAnswerFileChange} 
-                  className="hidden"  // Hides the default input styling
-                />
-              </label>
-            )}
+            <label
+          className={`flex items-center text-[#EFFBF0] text-base py-3 px-12 rounded-full transition duration-500 ease-in-out 
+          bg-[#6BDB76]/20 backdrop-blur-md select-none 
+          ${isUploading ? 'opacity-50 pointer-events-none' : 'hover:bg-[#6BDB76]/40 active:text-[#6BDB76] cursor-pointer'}`}>
+          
+          {questionFileUploaded ? (
+            <span className="animate-spin material-symbols-outlined text-5xl">progress_activity</span>
+          ) : questionFile ? (
+            <span className="material-symbols-outlined text-5xl">remove</span>
+          ) : (
+            <span className="material-symbols-outlined text-5xl">add</span>
+          )}
+
+          &nbsp;
+          {questionFile ? questionFile.name : "ADD QUESTION PAPER"}
+
+          <input 
+            type="file" 
+            accept=".txt,.png,.jpeg,.jpg,.pdf"
+            onChange={handleQuestionFileChange} 
+            className="hidden" 
+          />
+        </label>
+
+        <div className="h-7"></div>
+
+        {/* Answer File Upload */}
+        <label
+          className={`flex items-center text-[#EFFBF0] text-base py-3 px-14 rounded-full transition duration-500 ease-in-out 
+          bg-[#6BDB76]/20 backdrop-blur-md select-none 
+          ${isUploading ? 'opacity-50 pointer-events-none' : 'hover:bg-[#6BDB76]/40 active:text-[#6BDB76] cursor-pointer'}`}>
+
+          {answerFileUploaded ? (
+            <span className="animate-spin material-symbols-outlined text-5xl">progress_activity</span>
+          ) : answerFile ? (
+            <span className="material-symbols-outlined text-5xl">remove</span>
+          ) : (
+            <span className="material-symbols-outlined text-5xl">add</span>
+          )}
+
+          &nbsp;
+          {answerFile ? answerFile.name : "ADD ANSWER SHEET"}
+
+          <input 
+            type="file" 
+            accept=".txt,.png,.jpeg,.jpg,.pdf"
+            onChange={handleAnswerFileChange} 
+            className="hidden" 
+          />
+        </label>
             </div>
             <button 
-            onClick={handleUpload}
-            className="absolute left-20 bottom-1/4 flex items-center text-[#EFFBF0] text-base py-3 px-20 rounded-full transition duration-500 ease-in-out bg-[#6BDB76]/20 backdrop-blur-md hover:bg-[#6BDB76]/40 active:text-[#6BDB76] select-none">
-            EVALUATE&nbsp;
-           <span class="material-symbols-outlined text-5xl">trending_flat</span>
-            </button>
+  onClick={handleUpload}
+  disabled={!answerFileUrl || !questionFileUrl}
+  className={`absolute left-20 bottom-1/4 flex items-center text-[#EFFBF0] text-base py-3 px-20 rounded-full 
+  transition duration-500 ease-in-out bg-[#6BDB76]/20 backdrop-blur-md
+  ${!answerFileUrl || !questionFileUrl ? 'opacity-50 pointer-events-none' : 'hover:bg-[#6BDB76]/40 active:text-[#6BDB76] cursor-pointer'}`}>
+  
+  {
+    (!answerFileUrl || !questionFileUrl)
+    ? (
+      <div className="flex items-center gap-2">
+        <span className="animate-spin material-symbols-outlined text-5xl">progress_activity</span>
+        Waiting For Files...
+      </div>
+    )
+    : (
+      <>
+        EVALUATE&nbsp;
+        <span className="material-symbols-outlined text-5xl">trending_flat</span>
+      </>
+    )
+  }
+
+</button>
             { isLoading===-1 &&
             <HelpSection showHelp={showHelp} setShowHelp={setShowHelp} />
           }
@@ -161,7 +200,9 @@ const handleUpload = () => {
             <ResponseSecion 
               key={index} 
               question={qa.question} 
-              answer={`${qa.answer}\n${qa.feedback}\nScore: ${qa.score}`} 
+              answer={qa.answer}
+              feedback={qa.feedback}
+              score={qa.score}
             />
           ))
         }
@@ -206,11 +247,11 @@ const HelpText = () => {
         <div className="mt-3">
           <h3 className="text-lg text-[#EFFBF0] font-semibold">Question Paper Format</h3>
           <p className="text-sm text-[#EFFBF0] mt-1">
-            All question papers must be in <b>.txt</b> format and follow this structure:
+            All question papers must be in <b>.txt or .pdf or common image formats</b> format and follow this structure:
           </p>
           <pre className="bg-[#ADEBB3]/30 p-2 mt-2 text-sm rounded-xl whitespace-pre-wrap">
-  {`SECTION A - COMPREHENSION
-  [Write comprehension passage here]
+  {`SECTION
+  [Write questions here]
   .
   .
   .`}
@@ -220,28 +261,36 @@ const HelpText = () => {
         <div className="mt-3">
           <h3 className="text-lg text-[#EFFBF0] font-semibold">Answer Sheet Format</h3>
           <p className="text-smtext-[#EFFBF0] mt-1">
-            Answer sheets must also be in <b>.txt</b> format and follow this structure:
+            Answer sheets must also be in <b>.txt or .pdf or common image formats</b> format and follow this structure:
           </p>
           <pre className="bg-[#ADEBB3]/30 p-2 mt-2 text-sm rounded-xl whitespace-pre-wrap">
-  {`SECTION A
-  [Answers for comprehension]
+  {`SECTION
+  [Answers for section]
   .
   .
   .`}
           </pre>
         </div>
       </div>
+      <h2 className="text-sm text-[#EFFBF0] mt-10 ">- If the Evaluate button is not enabled after both file upload. Please wait upload functions are to cold start.</h2>
     </div>
+    
   );
 };
 
 
-const ResponseSecion=({question,answer})=>{
+const ResponseSecion=({question,answer,feedback,score})=>{
   return(
     <div className="flex flex-col w-[1000px] ">
       <h1 className="text-left text-[#EFFBF0] p-7 bg-[#6BDB76]/10 rounded-3xl">{question}</h1>
       <div className="h-3"></div>
-      <h1 className="text-left text-[#EFFBF0] p-7 bg-[#6BDB76]/20 rounded-3xl">{answer}</h1>
+      <div className="text-left text-[#EFFBF0] p-7 bg-[#6BDB76]/20 rounded-3xl">
+        <h1 className="text-left text-[#ADEBB3] px-7">Score: {score}</h1>
+        <h1 className="text-left text-[#ADEBB3] px-7 pt-5 text-sm">Your Answer:</h1>
+        <h1 className="text-left text-[#EFFBF0] px-7 ">{answer}</h1>
+        <h1 className="text-left text-[#ADEBB3] px-7 pt-5 text-sm">Feedback:</h1>
+        <h1 className="text-left text-[#EFFBF0] px-7 ">{feedback}</h1>
+      </div>
     </div>
   );
 };

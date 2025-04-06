@@ -2,7 +2,7 @@ import azure.functions as func
 import json
 import logging
 from utils.parse_question import generate_gemini_resp,get_data_from_file
-from utils.blob_storage import generate_sas_token, get_blob_data
+from utils.blob_storage import generate_sas_token, get_blob_data, clean_tmp
 
 app = func.FunctionApp()
 
@@ -25,17 +25,19 @@ def geminiResponse(req: func.HttpRequest) -> func.HttpResponse:
 
     if not question or not answers:
         try:
+            # clean_tmp()
             req_body = req.get_json()
             question = str(req_body.get('questions', question)) 
             answers = str(req_body.get('answers', answers))  
-
+            print("Question:",question)
+            print("Answer:",answers)
             question_file_path,question_type = get_blob_data(question)
             ans_file_path,answer_type = get_blob_data(answers)
 
             print("Question file type:",question_type)
             print("Answer file type:",answer_type)
 
-            if question_type != None and question_type != None:
+            if question_type != None and answer_type != None:
                 question_file_data = get_data_from_file(question_file_path,question_type)
                 answer_file_data = get_data_from_file(ans_file_path,answer_type)
             else:
@@ -47,6 +49,7 @@ def geminiResponse(req: func.HttpRequest) -> func.HttpResponse:
                 )
             
         except ValueError:
+
             return func.HttpResponse(
                 json.dumps({"error": "Missing questions or answers parameter"}),
                 status_code=400,
@@ -56,7 +59,7 @@ def geminiResponse(req: func.HttpRequest) -> func.HttpResponse:
 
     try:
         response_data = generate_gemini_resp(question_file_data, answer_file_data)
-
+        clean_tmp()
         return func.HttpResponse(
             json.dumps(response_data, indent=4),
             mimetype="application/json",
@@ -64,6 +67,7 @@ def geminiResponse(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     except Exception as e:
+        clean_tmp()
         logging.error(f"Error generating response: {e}")
         return func.HttpResponse(
             json.dumps({"error": f"Internal Server Error: {str(e)}"}),
